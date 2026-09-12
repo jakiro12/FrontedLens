@@ -82,9 +82,9 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
           {job.company || "Sin confirmar"}
         </span>
 
-        {job.applyUrl && (
+        {job.onFocus && (
           <span className="tz-direct-application">
-            ↗ Aplicación directa
+            {job.onFocus}
           </span>
         )}
       </div>

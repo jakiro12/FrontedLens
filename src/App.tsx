@@ -23,6 +23,7 @@ const JOBS = [
     note: "Buena oportunidad para perfiles con experiencia en React y TypeScript. La empresa permite aplicar directamente desde su página oficial.",
     applyUrl: "https://example.com/careers/acme-frontend",
     sourceUrl: "https://linkedin.com/jobs/view/000001",
+    onFocus:"Remoto"
   },
   {
     id: 2,
@@ -37,6 +38,7 @@ const JOBS = [
     note: "Buena oportunidad para perfiles con experiencia en React y TypeScript. La empresa permite aplicar directamente desde su página oficial.",
     applyUrl: "https://example.com/careers/acme-frontend",
     sourceUrl: "https://linkedin.com/jobs/view/000001",
+    onFocus:"Hibrido"
   },
 ];
 
