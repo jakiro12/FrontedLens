@@ -1,8 +1,6 @@
 import './App.css'
 
-import React, { useState} from "react";
 import HeaderSection from './components/Header';
-import FormRequest from './components/FormRequest';
 import CategoryTabs from './components/CategoriesJobs';
 import HeroSection from './components/HeroTitle';
 import JobCard from './components/JobCard';
@@ -15,7 +13,6 @@ import { useJobs } from './hooks/useJobs';
 
 
 export default function App() {
-  const [showForm,setShowForm]=useState<boolean>(false)
 
 const { error,jobs,loading,refetch } = useJobs();
 
