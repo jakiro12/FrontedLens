@@ -3,8 +3,9 @@ import ghostImg from "../assets/ghost.png"
 import prayImg from "../assets/pray.png"
 import rocketImg from "../assets/rocket.png"
 import slaveImg from "../assets/slave.png"
+import type { Job } from "../types/job";
 interface JobCardProps {
-  job: any;
+  job: Job;
 }
 
 const EDITORIAL_META: Record<string, { emoji: string; label: string }> = {
@@ -31,38 +32,56 @@ const EDITORIAL_META: Record<string, { emoji: string; label: string }> = {
 };
 
 const JobCard: React.FC<JobCardProps> = ({ job }) => {
-  const editorial = Array.isArray(job.editorial) ? job.editorial : [];
+ const editorial = Array.isArray(job.editorial)
+          ? job.editorial
+          : typeof job.editorial === 'string'
+          ? [job.editorial]
+          : [];
   const tags = Array.isArray(job.tags) ? job.tags : [];
+
+function calculateDays(fechaISO: string): number {
+  const [year, month, day] = fechaISO.substring(0, 10).split('-').map(Number);
+  const hoy = new Date();
+
+  const fechaInicio = new Date(year, month - 1, day).getTime();
+  const fechaHoy = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate()).getTime();
+
+  return Math.round((fechaHoy - fechaInicio ) / 86400000);
+}
 
   return (
     <article className="tz-card">
       <div className="tz-card-top">
         <span className="tz-card-date">
-          Publicado hace {job.daysAgo} días
+          Publicado hace {calculateDays(job.publishedAt)} día/s
         </span>
 
         {editorial.length > 0 && (
-          <div className="tz-card-editorial">
-            {editorial.map((key: string) => {
-              const meta = EDITORIAL_META[key];
+                <div className="tz-card-editorial">
+                  {editorial.map((key: string) => {
+                    const meta = EDITORIAL_META[key];
 
-              if (!meta) return null;
+                    if (!meta) return null;
 
-              return (
-                <span className="tz-editorial-badge" key={key}>
-                  <img
-                    style={{width:20,height:20}}
-                    src={meta.emoji}
-                    alt={meta.label}/>
-                  <span>{meta.label}</span>
-                </span>
-              );
-            })}
-          </div>
-        )}
+                    return (
+                      <span className="tz-editorial-badge" key={key}>
+                        <img
+                          style={{ width: 25, height: 25 }}
+                          src={meta.emoji}
+                          alt={meta.label}
+                        />
+                        <span>{meta.label}</span>
+                      </span>
+                    );
+                  })}
+                </div>
+              )}
       </div>
 
       <div className="tz-card-content">
+        <span className="tz-company-name">
+          {job.category}
+        </span>
         <p className="tz-card-snippet">{job.snippet}</p>
 
         {tags.length > 0 && (
@@ -87,6 +106,11 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
             {job.onFocus}
           </span>
         )}
+           {job.country && (
+                <span className="tz-company-label">
+                  {job.country}
+                </span>
+              )}
       </div>
 
       <div className="tz-card-actions">

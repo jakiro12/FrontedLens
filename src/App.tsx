@@ -6,71 +6,77 @@ import FormRequest from './components/FormRequest';
 import CategoryTabs from './components/CategoriesJobs';
 import HeroSection from './components/HeroTitle';
 import JobCard from './components/JobCard';
+import { useJobs } from './hooks/useJobs';
 
 
 
-const JOBS = [
-  {
-    id: 1,
-    category: "React",
-    snippet:
-      "Buscamos desarrollador/a Frontend para incorporarse a nuestro equipo de producto. Trabajamos con componentes reutilizables y un sistema de diseño propio.",
-    tags: ["React", "TypeScript", "Next.js"],
-    daysAgo: 2,
-    company: "Acme",
-    directApply: true,
-    editorial: ["revisada"],
-    note: "Buena oportunidad para perfiles con experiencia en React y TypeScript. La empresa permite aplicar directamente desde su página oficial.",
-    applyUrl: "https://example.com/careers/acme-frontend",
-    sourceUrl: "https://linkedin.com/jobs/view/000001",
-    onFocus:"Remoto"
-  },
-  {
-    id: 2,
-    category: "React",
-    snippet:
-      "Buscamos desarrollador/a Frontend para incorporarse a nuestro equipo de producto. Trabajamos con componentes reutilizables y un sistema de diseño propio.",
-    tags: ["React", "TypeScript", "Next.js"],
-    daysAgo: 2,
-    company: "Acme",
-    directApply: true,
-    editorial: ["revisada"],
-    note: "Buena oportunidad para perfiles con experiencia en React y TypeScript. La empresa permite aplicar directamente desde su página oficial.",
-    applyUrl: "https://example.com/careers/acme-frontend",
-    sourceUrl: "https://linkedin.com/jobs/view/000001",
-    onFocus:"Hibrido"
-  },
-];
+
 
 
 
 export default function App() {
-  const [view, setView] = useState("home"); 
   const [showForm,setShowForm]=useState<boolean>(false)
 
+const { error,jobs,loading,refetch } = useJobs();
 
 
+const renderJobsData=()=>{
+ if (loading) {
+  return (
+    <div className="loader">
+      <div className="loaderSpinner" />
 
+      <div className="loaderMessage">
+        <strong>Cargando empleos...</strong>
+        <span>
+          El servidor en Render se está iniciando, esto puede tomar hasta 1 minuto.
+        </span>
+      </div>
+    </div>
+  );
+}
+  if (jobs.length===0) return <div className="jobsEmptyContainer">
+      <div className="jobsEmptyIcon">
+        💼
+      </div>
 
-  const goHome=()=> {
-    setView("home");
-    window.scrollTo?.({ top: 0 });
-  }
+      <p className="jobsEmptyMessage">
+        <strong>No hay vacantes publicadas</strong>
+        Por el momento no hay nuevas oportunidades disponibles.
+      </p>
+    </div>
+  if(jobs.length > 0) return jobs.map((job) => (
+    <JobCard key={job.id} job={job} />
+  ))
+ if (error) {
+  return (
+    <div className="jobsErrorContainer">
+      <div className="jobsErrorIcon">
+        !
+      </div>
 
-  function goForm() {
-    setView("form");
-    window.scrollTo?.({ top: 0 });
-  }
+      <p className="jobsErrorMessage">
+        <strong>Ocurrió un error</strong>
+        {error}
+      </p>
 
+      <button
+        className="jobsErrorRetryButton"
+        onClick={refetch}
+      >
+        Reintentar
+      </button>
+    </div>
+  );
+}
+}
   return (
     <div className="tamiz-root">
-      <HeaderSection onHome={goHome} onForm={goForm} />
+      <HeaderSection  />
           <HeroSection />
           <CategoryTabs    />
            <section className="tz-list" aria-label="Listado de ofertas">
-      {JOBS.map((job) => (
-        <JobCard key={job.id} job={job}  />
-      ))}
+      {renderJobsData()}
     </section>
     </div>
   );

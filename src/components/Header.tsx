@@ -1,17 +1,14 @@
 import '../App.css'
 
-interface HeaderProps{
-    onHome:()=>void
-    onForm:()=>void
-}
 
-const HeaderSection:React.FC<HeaderProps>=({ onHome, onForm })=> {
+
+const HeaderSection=()=> {
   return (
     <header className="tz-header">
-        <button className="tz-logo" onClick={onHome}>
+        <button className="tz-logo" >
           ..Front/..End/..Lens
         </button>
-          <button className="tz-nav-cta" onClick={onForm}>
+          <button className="tz-nav-cta" >
             Selección personalizada
           </button>
     </header>
