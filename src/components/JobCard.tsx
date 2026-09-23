@@ -48,11 +48,17 @@ function calculateDays(fechaISO: string): number {
 
   return Math.round((fechaHoy - fechaInicio ) / 86400000);
 }
-
+function getDateBadgeClass(days: number): string {
+    if (days < 7) return "#137333";
+    if (days <= 14) return "#b06000";
+    return "#c5221f";
+  }
+  const daysAgo = calculateDays(job.publishedAt);
+  const badgeClass = getDateBadgeClass(daysAgo);
   return (
     <article className="tz-card">
       <div className="tz-card-top">
-        <span className="tz-card-date">
+        <span className="tz-card-date" style={{color:badgeClass}}>
           Publicado hace {calculateDays(job.publishedAt)} día/s
         </span>
 
