@@ -6,34 +6,60 @@ import HeroSection from './components/HeroTitle';
 import JobCard from './components/JobCard';
 import { useJobs } from './hooks/useJobs';
 import { CATEGORY_TAG_MAP, type Category } from './utils/categories';
+import { CountryFilter } from './components/CountryFilter';
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState<Category>("Todas");
+  const [selectedCountry, setSelectedCountry] = useState<string>("Todos");
   const { error, jobs, loading, refetch } = useJobs();
 
-  const filteredJobs = useMemo(() => {
-    if (selectedCategory === "Todas") return jobs;
+  const availableCountries = useMemo(() => {
+  const countriesSet = new Set<string>();
+  let hasUnknownCountry = false;
 
-    const allowedTags = CATEGORY_TAG_MAP[selectedCategory] || [];
+  jobs.forEach((job) => {
+    if (job.country && job.country.trim() !== "") {
+      countriesSet.add(job.country.trim());
+    } else {
+      hasUnknownCountry = true;
+    }
+  });
 
-    return jobs.filter((job) => {
-      const jobTags = Array.isArray(job.tags) ? job.tags : [];
-      const normalizedJobTags = jobTags.map((t) => t.toLowerCase());
+  const list = Array.from(countriesSet).sort();
+  if (hasUnknownCountry) {
+    list.push("Sin especificar");
+  }
+
+  return list;
+}, [jobs]);
+ const filteredJobs = useMemo(() => {
+  return jobs.filter((job) => {
+    let matchesCategory = true;
+    if (selectedCategory !== "Todas") {
+      const allowedTags = CATEGORY_TAG_MAP[selectedCategory] || [];
+      const jobTags = Array.isArray(job.tags) ? job.tags.map((t) => t.toLowerCase()) : [];
 
       if (selectedCategory === "Web + Mobile") {
-        const hasWeb = normalizedJobTags.some((tag) =>
-          CATEGORY_TAG_MAP.Web.includes(tag)
-        );
-        const hasMobile = normalizedJobTags.some((tag) =>
-          CATEGORY_TAG_MAP.Mobile.includes(tag)
-        );
-        return hasWeb && hasMobile;
+        const hasWeb = jobTags.some((tag) => CATEGORY_TAG_MAP.Web.includes(tag));
+        const hasMobile = jobTags.some((tag) => CATEGORY_TAG_MAP.Mobile.includes(tag));
+        matchesCategory = hasWeb && hasMobile;
+      } else {
+        matchesCategory = jobTags.some((tag) => allowedTags.includes(tag));
       }
+    }
 
-      return normalizedJobTags.some((tag) => allowedTags.includes(tag));
-    });
-  }, [jobs, selectedCategory]);
+    let matchesCountry = true;
+    if (selectedCountry !== "Todos") {
+      if (selectedCountry === "Sin especificar") {
+        matchesCountry = !job.country || job.country.trim() === "";
+      } else {
+        matchesCountry = job.country?.trim().toLowerCase() === selectedCountry.toLowerCase();
+      }
+    }
 
+    return matchesCategory && matchesCountry;
+  });
+}, [jobs, selectedCategory, selectedCountry]);
   const renderJobsData = () => {
     if (loading) {
       return (
@@ -94,11 +120,18 @@ export default function App() {
     <div className="tamiz-root">
       <HeaderSection />
       <HeroSection />
-      {showCategoryTabs && (
-        <CategoryTabs
-          selectedCategory={selectedCategory}
-          onSelectCategory={setSelectedCategory}
-        />
+     {showCategoryTabs && (
+        <div className="tz-filters-bar">
+          <CategoryTabs
+            selectedCategory={selectedCategory}
+            onSelectCategory={setSelectedCategory}
+          />
+          <CountryFilter
+            countries={availableCountries}
+            selectedCountry={selectedCountry}
+            onSelectCountry={setSelectedCountry}
+          />
+        </div>
       )}
       <section className="tz-list" aria-label="Listado de ofertas">
         {renderJobsData()}
