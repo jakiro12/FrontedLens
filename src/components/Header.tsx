@@ -9,7 +9,7 @@ const HeaderSection=()=> {
           ..Front/..End/..Lens
         </button>
           <button className="tz-nav-cta" >
-            Selección personalizada
+          Proximamente 
           </button>
     </header>
   );

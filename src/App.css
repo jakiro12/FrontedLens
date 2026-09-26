@@ -398,13 +398,13 @@
 
 .tz-direct-application {
   display: inline-flex;
-  align-items: center;
-  gap: 4px;
-
+  align-items: flex-end;
   color: var(--success);
-
+  height: 100%;
   font-size: 0.8125rem;
   font-weight: 600;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 
