@@ -443,7 +443,7 @@
 .tz-btn-secondary {
   width: fit-content;
 
-  background: var(--paper-raised);
+  background: #ffffff;
   border: 1px solid #dbe3ed;
 
   color: #334155;
@@ -452,21 +452,21 @@
 .tz-btn-secondary:hover {
   background: #f8fafc;
   border-color: #94a3b8;
-  color: var(--ink);
+  color: #172b4d;
 }
 
 .tz-btn-primary {
   flex: 0 1 auto;
 
-  background: var(--accent);
-  border: 1px solid var(--accent);
+  background: #2563eb;
+  border: 1px solid #2563eb;
 
   color: #ffffff;
 }
 
 .tz-btn-primary:hover {
-  background: var(--accent-dark);
-  border-color: var(--accent-dark);
+  background: #1d4ed8;
+  border-color: #1d4ed8;
 }
 
 .tz-card-actions a:focus-visible {
