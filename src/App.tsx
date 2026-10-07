@@ -7,11 +7,20 @@ import JobCard from './components/JobCard';
 import { useJobs } from './hooks/useJobs';
 import { CATEGORY_TAG_MAP, type Category } from './utils/categories';
 import { CountryFilter } from './components/CountryFilter';
+import OpenRolesCounter from './components/JobsCounter';
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState<Category>("Todas");
   const [selectedCountry, setSelectedCountry] = useState<string>("Todos");
-  const { error, jobs, loading, refetch } = useJobs();
+  const { error, jobs, loading, refetch,currentQuantity } = useJobs();
+
+console.log(jobs)
+  const RenderOpenPositionsCounter=()=>{
+    if(loading) return null;
+    if(error) return null;
+    if(currentQuantity == null) return null;
+    if(currentQuantity! > 0) return <OpenRolesCounter counter={currentQuantity}/>
+  }
 
   const availableCountries = useMemo(() => {
   const countriesSet = new Set<string>();
@@ -32,6 +41,9 @@ export default function App() {
 
   return list;
 }, [jobs]);
+
+
+
  const filteredJobs = useMemo(() => {
   return jobs.filter((job) => {
     let matchesCategory = true;
@@ -133,6 +145,7 @@ export default function App() {
           />
         </div>
       )}
+        {RenderOpenPositionsCounter()}
       <section className="tz-list" aria-label="Listado de ofertas">
         {renderJobsData()}
       </section>
