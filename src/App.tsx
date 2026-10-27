@@ -8,13 +8,14 @@ import { useJobs } from './hooks/useJobs';
 import { CATEGORY_TAG_MAP, type Category } from './utils/categories';
 import { CountryFilter } from './components/CountryFilter';
 import OpenRolesCounter from './components/JobsCounter';
+import FormRequest from './components/FormRequest';
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState<Category>("Todas");
   const [selectedCountry, setSelectedCountry] = useState<string>("Todos");
+  const [showForm,setShowForm]=useState<boolean>(false)
   const { error, jobs, loading, refetch,currentQuantity } = useJobs();
 
-console.log(jobs)
   const RenderOpenPositionsCounter=()=>{
     if(loading) return null;
     if(error) return null;
@@ -130,7 +131,9 @@ console.log(jobs)
 
   return (
     <div className="tamiz-root">
-      <HeaderSection />
+      <HeaderSection 
+      onpenForm={()=>setShowForm(true)}
+      />
       <HeroSection />
      {showCategoryTabs && (
         <div className="tz-filters-bar">
@@ -149,6 +152,7 @@ console.log(jobs)
       <section className="tz-list" aria-label="Listado de ofertas">
         {renderJobsData()}
       </section>
+      {showForm && <FormRequest onBack={()=>setShowForm(false)}/> }
     </div>
   );
 }

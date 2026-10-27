@@ -1,15 +1,19 @@
 import '../App.css'
 
+interface Props{
+  onpenForm:()=>void;
+}
 
-
-const HeaderSection=()=> {
+const HeaderSection:React.FC<Props>=({onpenForm})=> {
   return (
     <header className="tz-header">
         <button className="tz-logo" >
           ..Front/..End/..Lens
         </button>
-          <button className="tz-nav-cta" >
-          Proximamente 
+          <button
+          onClick={onpenForm}
+          className="tz-nav-cta" >
+          Sumarse
           </button>
     </header>
   );

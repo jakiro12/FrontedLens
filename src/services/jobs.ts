@@ -1,4 +1,4 @@
-const API_URL = 'https://frontedlenspanel.onrender.com';
+import { API_URL } from "../utils/api_url";
 
 export async function getJobs() {
   const response = await fetch(`${API_URL}/jobs`, {
