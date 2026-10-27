@@ -44,6 +44,6 @@ export async function createCustomer(customerData: any) {
   if (!response.ok) {
     throw new Error(`Error ${response.status}: No se pudo crear el cliente.`);
   }
-
+  
   return response.json();
 }
