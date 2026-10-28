@@ -178,6 +178,7 @@ const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
           checked={form.technologies.includes(technology)}
           onChange={() => handleTechnologyChange(technology)}
           className="checkboxInput"
+          style={{marginRight:5}}
         />
         {technology}
       </label>

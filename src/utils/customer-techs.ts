@@ -1,14 +1,12 @@
 export const frontendTechnologies = [
-  "JavaScript",
-  "TypeScript",
-  "React",
-  "Next.js",
   "Angular",
-  "Vue.js",
+  "React",
+  "NextJs",
+  "Vue",
+  "Svelte",
   "React Native",
   "RN CLI",
   "Expo",
-  "Tailwind",
   "Redux",
-  "Vite",
+  "Zustand"
 ];
