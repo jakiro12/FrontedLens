@@ -99,12 +99,6 @@ const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
       message.includes("email") && message.includes("exist")
     ) {
       setError("Este email ya está registrado. Probá con otro o verificá si ya te inscribiste.");
-    } else if (status === 400) {
-      setError("Los datos enviados no son válidos. Revisá el formulario.");
-    } else if (status === 429) {
-      setError("Hiciste demasiados intentos. Esperá un momento y volvé a probar.");
-    } else if (status >= 500) {
-      setError("El servidor está teniendo problemas. Esperá un momento e intentá nuevamente.");
     } else {
       setError("No se pudo registrar tu solicitud. Verificá los datos e intentá nuevamente.");
     }
